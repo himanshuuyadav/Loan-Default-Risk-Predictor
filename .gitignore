@@ -1,0 +1,49 @@
+# Virtual Environment
+venv/
+ENV/
+.venv/
+plan.md
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Data (Ignore large dataset files)
+data/raw/accepted_2007_to_2018Q4.csv
+data/raw/*.zip
+data/raw/*.csv
+data/processed/*.csv
+
+# Models (Ignore large model binary files)
+models/xgb_loan_default_model.pkl
+models/scaler.pkl
+
+# Jupyter
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
