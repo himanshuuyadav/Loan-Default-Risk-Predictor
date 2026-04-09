@@ -148,8 +148,10 @@ class LoanDefaultPreprocessor:
         frame = df.copy()
         if fit:
             self.drop_threshold_ = int(np.ceil(len(frame.columns) * 0.5))
-        if self.drop_threshold_:
-            frame = frame.dropna(thresh=self.drop_threshold_)
+            if self.drop_threshold_:
+                frame = frame.dropna(thresh=self.drop_threshold_)
+        else:
+            return frame
         return frame
 
     def _clean_columns(self, df: pd.DataFrame) -> pd.DataFrame:

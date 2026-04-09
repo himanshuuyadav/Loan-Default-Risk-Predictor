@@ -1,26 +1,47 @@
-# 🏦 Loan Default Risk Prediction
+# Loan Default Risk Prediction
 
-A production-grade machine learning system to predict whether a borrower will default on a loan.
+An end-to-end machine learning pipeline for loan default prediction using the Lending Club dataset.
 
-## 🚀 Quick Start
+## What Is Implemented
 
-### 1. Set Up Environment
+- Raw data loading, loan-status filtering, and binary target creation
+- Reusable preprocessing pipeline shared by training and inference
+- Feature engineering for FICO averages, income ratios, DTI bands, and risk flags
+- EDA figure generation and JSON summary output
+- Stratified train/test split, SMOTE balancing, and feature scaling
+- Multi-model training with Logistic Regression, Random Forest, and XGBoost
+- Evaluation reports with metrics, confusion matrices, ROC comparison, and threshold optimization
+- Optional XGBoost tuning with RandomizedSearchCV or Optuna
+- SHAP explainability plots for the best tree-based model
+- Deployment artifacts for prediction: model, scaler, preprocessor, feature list, and metadata
+
+## Quick Start
+
 ```bash
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Project Structure
-- `data/`: Raw and processed datasets
-- `notebooks/`: Step-by-step development and analysis
-- `src/`: Core logic and production scripts
-- `models/`: Saved model artifacts
-- `reports/`: Visualization and metrics reports
+Run EDA:
 
-## 📊 Key Features
-- End-to-end ML pipeline
-- Handling class imbalance with SMOTE
-- Advanced modeling with XGBoost and Random Forest
-- Model interpretability using SHAP
-- Hyperparameter optimization with Optuna
+```bash
+python -m src.eda --data-path data/raw/accepted_2007_to_2018Q4.csv --reports-dir reports
+```
+
+Run training:
+
+```bash
+python -m src.train --data-path data/raw/accepted_2007_to_2018Q4.csv --model-dir models --reports-dir reports --tune-method optuna
+```
+
+## Key Output Files
+
+- `reports/figures/*.png`: EDA, confusion matrices, ROC, and SHAP plots
+- `reports/eda_summary.json`: EDA summary statistics
+- `reports/metrics.json`: model evaluation reports
+- `models/xgb_loan_default_model.pkl`: saved best model artifact
+- `models/scaler.pkl`: fitted scaler
+- `models/preprocessor.pkl`: reusable preprocessing pipeline
+- `models/feature_list.json`: expected model input columns
+- `models/metadata.json`: best model name, threshold, and training metadata
