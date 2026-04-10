@@ -2,6 +2,7 @@
 venv/
 ENV/
 .venv/
+.tmp/
 plan.md
 # Python
 __pycache__/
@@ -35,6 +36,11 @@ data/processed/*.csv
 # Models (Ignore large model binary files)
 models/xgb_loan_default_model.pkl
 models/scaler.pkl
+models/preprocessor.pkl
+models/feature_list.json
+models/metadata.json
+reports/figures/*.png
+reports/*.json
 
 # Jupyter
 .ipynb_checkpoints

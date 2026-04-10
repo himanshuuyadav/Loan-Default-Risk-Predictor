@@ -3,11 +3,9 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict
 
 import joblib
-import numpy as np
-import pandas as pd
 import xgboost as xgb
 from imblearn.over_sampling import SMOTE
 from sklearn.ensemble import RandomForestClassifier
@@ -240,10 +238,19 @@ def save_artifacts(
         json.dump(metadata, file, indent=2)
 
 
+def save_processed_dataset(processed_frame, output_path: str | Path) -> None:
+    """Persist the prepared modeling dataset for reproducibility."""
+
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    processed_frame.to_csv(output_path, index=False)
+
+
 def run_training_pipeline(
     data_path: str | Path,
     model_dir: str | Path,
     reports_dir: str | Path,
+    processed_data_path: str | Path = "data/processed/prepared_dataset.csv",
     nrows: int | None = None,
     tune_method: str = "none",
     optuna_trials: int = 20,
@@ -259,6 +266,7 @@ def run_training_pipeline(
 
     preprocessor = LoanDefaultPreprocessor()
     processed = preprocessor.fit_transform(model_frame)
+    save_processed_dataset(processed, processed_data_path)
 
     X = processed.drop(columns=["default"])
     y = processed["default"]
@@ -345,6 +353,11 @@ def parse_args():
     parser.add_argument("--data-path", required=True, help="Path to the raw Lending Club CSV file.")
     parser.add_argument("--model-dir", default="models", help="Directory for saved model artifacts.")
     parser.add_argument("--reports-dir", default="reports", help="Directory for evaluation reports and figures.")
+    parser.add_argument(
+        "--processed-data-path",
+        default="data/processed/prepared_dataset.csv",
+        help="Path for saving the cleaned and engineered modeling dataset.",
+    )
     parser.add_argument("--nrows", type=int, default=None, help="Optional row limit for quick experiments.")
     parser.add_argument(
         "--tune-method",
@@ -367,6 +380,7 @@ if __name__ == "__main__":
         data_path=args.data_path,
         model_dir=args.model_dir,
         reports_dir=args.reports_dir,
+        processed_data_path=args.processed_data_path,
         nrows=args.nrows,
         tune_method=args.tune_method,
         optuna_trials=args.optuna_trials,

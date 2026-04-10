@@ -29,10 +29,22 @@ Run EDA:
 python -m src.eda --data-path data/raw/accepted_2007_to_2018Q4.csv --reports-dir reports
 ```
 
+Prepare the modeling dataset:
+
+```bash
+python -m src.prepare_data --data-path data/raw/accepted_2007_to_2018Q4.csv --output-path data/processed/prepared_dataset.csv
+```
+
 Run training:
 
 ```bash
 python -m src.train --data-path data/raw/accepted_2007_to_2018Q4.csv --model-dir models --reports-dir reports --tune-method optuna
+```
+
+Run prediction from a JSON payload:
+
+```bash
+python -m src.predict --input-json sample_applicant.json
 ```
 
 ## Key Output Files
@@ -45,3 +57,4 @@ python -m src.train --data-path data/raw/accepted_2007_to_2018Q4.csv --model-dir
 - `models/preprocessor.pkl`: reusable preprocessing pipeline
 - `models/feature_list.json`: expected model input columns
 - `models/metadata.json`: best model name, threshold, and training metadata
+- `data/processed/prepared_dataset.csv`: cleaned and engineered modeling table
